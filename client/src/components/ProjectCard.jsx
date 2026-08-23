@@ -1,0 +1,3 @@
+export default function ProjectCard() {
+  return <article>Project card placeholder</article>
+}
