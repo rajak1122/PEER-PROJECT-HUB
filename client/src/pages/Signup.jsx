@@ -1,3 +1,332 @@
-export default function Signup() {
-  return <main><h1>Sign up</h1></main>
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+function Signup() {
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must contain at least 6 characters.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await signup(formData.email, formData.password);
+
+      // MongoDB user profile creation will come here later
+
+      navigate("/home");
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        setError("An account already exists with this email.");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Please enter a valid email address.");
+      } else if (error.code === "auth/weak-password") {
+        setError("Password is too weak. Please use a stronger password.");
+      } else if (error.code === "auth/operation-not-allowed") {
+        setError("Email and password signup is currently unavailable.");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#050507] text-white flex">
+      {/* LEFT SIDE */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden border-r border-white/10">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.18),transparent_55%)]" />
+
+        <div className="relative z-10 w-full p-10 flex flex-col">
+          {/* Logo */}
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">
+              <span className="text-violet-500">&lt;&gt;</span> PPH
+            </h1>
+
+            <p className="text-xs tracking-[0.25em] text-gray-400">
+              PEER PROJECT HUB
+            </p>
+          </div>
+
+          {/* Hero text */}
+          <div className="mt-20">
+            <h2 className="text-5xl font-semibold leading-tight">
+              Build.
+              <br />
+              Collaborate.
+              <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-violet-500 to-blue-500">
+                Grow Together.
+              </span>
+            </h2>
+
+            <p className="mt-6 max-w-md text-gray-400 text-lg leading-relaxed">
+              Share your projects, discover amazing creations and connect with
+              peers who build the future.
+            </p>
+          </div>
+
+          {/* Project Cards */}
+          <div className="relative flex-1 mt-12">
+            {/* Card 1 */}
+            <div
+              className="absolute top-0 right-8 w-64 p-5 rounded-2xl
+              bg-white/4 border border-white/10
+              backdrop-blur-xl rotate-3 shadow-2xl"
+            >
+              <div
+                className="w-10 h-10 rounded-xl bg-violet-600/20
+                flex items-center justify-center text-violet-400 text-xl"
+              >
+                ✦
+              </div>
+
+              <h3 className="mt-4 font-semibold">AI Resume Builder</h3>
+
+              <p className="text-sm text-gray-500 mt-2">
+                Smart resume builder with AI suggestions
+              </p>
+
+              <span
+                className="inline-block mt-4 px-3 py-1 rounded-full
+                bg-violet-500/10 text-violet-400 text-xs"
+              >
+                MERN Stack
+              </span>
+            </div>
+
+            {/* Card 2 */}
+            <div
+              className="absolute left-4 w-60 p-5 rounded-2xl
+              bg-white/4 border border-white/10
+              backdrop-blur-xl -rotate-3"
+            >
+              <div
+                className="w-10 h-10 rounded-xl bg-blue-600/20
+                flex items-center justify-center text-blue-400 text-xl"
+              >
+                ◈
+              </div>
+
+              <h3 className="mt-4 font-semibold">PeerConnect</h3>
+
+              <p className="text-sm text-gray-500 mt-2">
+                Real-time collaboration for developers
+              </p>
+
+              <span
+                className="inline-block mt-4 px-3 py-1 rounded-full
+                bg-blue-500/10 text-blue-400 text-xs"
+              >
+                React + Socket.io
+              </span>
+            </div>
+
+            {/* Center glowing platform */}
+            <div
+              className="absolute bottom-20 left-1/2 -translate-x-1/2
+              w-72 h-24 rounded-full
+              bg-linear-to-r from-violet-600/30 to-blue-600/30
+              blur-2xl"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-10">
+        <div className="w-full max-w-xl">
+          {/* Top navigation */}
+          <div className="flex items-center justify-between mb-14">
+            <Link
+              to="/"
+              className="w-11 h-11 rounded-full border border-white/10
+                flex items-center justify-center
+                text-gray-400 hover:text-white hover:bg-white/5
+                transition"
+            >
+              ←
+            </Link>
+
+            <p className="text-sm text-gray-500">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="ml-2 text-violet-400 hover:text-violet-300"
+              >
+                Log in
+              </Link>
+            </p>
+          </div>
+
+          {/* Heading */}
+          <div className="mb-10">
+            <h2 className="text-4xl font-semibold">Create Your Account</h2>
+
+            <p className="mt-3 text-gray-500">
+              Join Peer Project Hub and start your journey.
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Name */}
+            <div>
+              <label className="text-sm text-gray-400">Full Name</label>
+
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your name"
+                required
+                className="mt-2 w-full h-14 px-5 rounded-xl
+                  bg-white/3 border border-white/10
+                  text-white placeholder:text-gray-600
+                  outline-none focus:border-violet-500/60
+                  focus:ring-1 focus:ring-violet-500/30
+                  transition"
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="text-sm text-gray-400">Email Address</label>
+
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                required
+                className="mt-2 w-full h-14 px-5 rounded-xl
+                  bg-white/3 border border-white/10
+                  text-white placeholder:text-gray-600
+                  outline-none focus:border-violet-500/60
+                  focus:ring-1 focus:ring-violet-500/30
+                  transition"
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="text-sm text-gray-400">Password</label>
+
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                required
+                className="mt-2 w-full h-14 px-5 rounded-xl
+                  bg-white/3 border border-white/10
+                  text-white placeholder:text-gray-600
+                  outline-none focus:border-violet-500/60
+                  focus:ring-1 focus:ring-violet-500/30
+                  transition"
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="text-sm text-gray-400">Confirm Password</label>
+
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                required
+                className="mt-2 w-full h-14 px-5 rounded-xl
+                  bg-white/3 border border-white/10
+                  text-white placeholder:text-gray-600
+                  outline-none focus:border-violet-500/60
+                  focus:ring-1 focus:ring-violet-500/30
+                  transition"
+              />
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div
+                className="px-4 py-3 rounded-xl
+                bg-red-500/10 border border-red-500/20
+                text-red-400 text-sm"
+              >
+                {error}
+              </div>
+            )}
+
+            {/* Password hint */}
+            <p className="text-xs text-gray-600">
+              Use at least 6 characters for your password.
+            </p>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-14 rounded-xl
+                bg-linear-to-r from-violet-600 to-blue-600
+                hover:from-violet-500 hover:to-blue-500
+                disabled:opacity-50 disabled:cursor-not-allowed
+                font-medium text-white
+                shadow-lg shadow-violet-900/20
+                transition flex items-center justify-center gap-3"
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+
+              {!loading && <span className="text-xl">→</span>}
+            </button>
+          </form>
+
+          {/* Terms */}
+          <p className="mt-8 text-center text-xs text-gray-600 leading-relaxed">
+            By signing up, you agree to our{" "}
+            <span className="text-violet-400">Terms of Service</span> and{" "}
+            <span className="text-violet-400">Privacy Policy</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }
+
+export default Signup;

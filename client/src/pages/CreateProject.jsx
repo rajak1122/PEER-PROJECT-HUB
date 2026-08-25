@@ -1,3 +1,13 @@
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 export default function CreateProject() {
-  return <main><h1>Create project</h1></main>
+  return (
+    <>
+      <div>
+        <Navbar />
+        <Footer />
+      </div>
+    </>
+  );
 }

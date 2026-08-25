@@ -1,3 +1,13 @@
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 export default function Profile() {
-  return <main><h1>Profile</h1></main>
+  return (
+    <>
+      <div>
+        <Navbar />
+        <Footer />
+      </div>
+    </>
+  );
 }
