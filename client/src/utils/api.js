@@ -1,5 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
-export default axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
-})
+const API_URL = "http://localhost:5000";
+
+export const getProjects = async () => {
+  const response = await axios.get(`${API_URL}/api/projects`);
+
+  return response.data;
+};

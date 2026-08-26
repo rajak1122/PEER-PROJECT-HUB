@@ -8,7 +8,7 @@ import {
 
 import auth from "../utils/firebase";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -21,6 +21,8 @@ export function AuthProvider({ children }) {
     });
     return unsubscribe;
   }, []);
+
+  console.log("Protected Route:", currentUser, loading);
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);

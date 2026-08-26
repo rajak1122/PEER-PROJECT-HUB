@@ -3,11 +3,12 @@ import Footer from "../components/Footer";
 
 export default function CreateProject() {
   return (
-    <>
-      <div>
-        <Navbar />
-        <Footer />
-      </div>
-    </>
+    <div>
+      <Navbar />
+
+      {/* Create Project content will come here */}
+
+      <Footer />
+    </div>
   );
 }
