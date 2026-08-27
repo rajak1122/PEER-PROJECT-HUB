@@ -8,12 +8,16 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getProjects } from "../utils/api";
+import { getProjects, likeProject } from "../utils/api";
+import { useAuth } from "../context/AuthContext";
 
 import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
+import Footer from "../components/Footer";
 
 export default function Home() {
+  const { currentUser } = useAuth();
+
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Latest");
   const [loading, setLoading] = useState(true);
@@ -66,6 +70,26 @@ export default function Home() {
     return result;
   }, [projects, search, activeFilter]);
 
+  //Like
+  const handleLike = async (id) => {
+    if (!currentUser) {
+      alert("Please login to like this project.");
+      return;
+    }
+
+    try {
+      const data = await likeProject(id);
+
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project._id === id ? { ...project, likes: data.likes } : project,
+        ),
+      );
+    } catch (error) {
+      console.error("Failed to like project:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#08090d] text-white">
       <Navbar />
@@ -106,7 +130,9 @@ export default function Home() {
               <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-3">
                 <FolderGit2 size={18} className="text-purple-400" />
                 <div>
-                  <p className="text-sm font-semibold text-white">1200+</p>
+                  <p className="text-sm font-semibold text-white">
+                    {projects.length}
+                  </p>
                   <p className="text-[11px] text-gray-500">Projects</p>
                 </div>
               </div>
@@ -197,7 +223,7 @@ export default function Home() {
                 <ProjectCard
                   key={project._id}
                   project={project}
-                  onLike={() => console.log("Like project:", project._id)}
+                  onClick={() => handleLike(project._id)}
                 />
               ))}
             </div>
@@ -243,6 +269,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Code2, FileText, Github, Globe, Layers3, Save } from "lucide-react";
+import { Code2, FileText, Globe, Layers3, Save } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 const emptyForm = {
   title: "",
@@ -23,16 +24,6 @@ export default function ProjectForm({
       : initialData.techStack || "",
   });
 
-  useEffect(() => {
-    setFormData({
-      ...emptyForm,
-      ...initialData,
-      techStack: Array.isArray(initialData.techStack)
-        ? initialData.techStack.join(", ")
-        : initialData.techStack || "",
-    });
-  }, [initialData]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -42,7 +33,7 @@ export default function ProjectForm({
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formattedData = {
@@ -53,7 +44,17 @@ export default function ProjectForm({
         .filter(Boolean),
     };
 
-    onSubmit(formattedData);
+    const success = await onSubmit(formattedData);
+
+    if (success) {
+      setFormData({
+        title: "",
+        description: "",
+        techStack: "",
+        githubUrl: "",
+        liveUrl: "",
+      });
+    }
   };
 
   const inputClass =
@@ -165,7 +166,7 @@ export default function ProjectForm({
           </label>
 
           <div className="relative">
-            <Github
+            <FaGithub
               size={17}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"
             />

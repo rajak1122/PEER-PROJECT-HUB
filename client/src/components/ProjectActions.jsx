@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function ProjectActions({
   project,
   isOwner = false,
-  onLike,
+  onClick,
   onEdit,
   onDelete,
 }) {
@@ -18,7 +18,7 @@ export default function ProjectActions({
       {/* Like */}
       <button
         type="button"
-        onClick={onLike}
+        onClick={onClick}
         className="group inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-400 transition hover:bg-white/5 hover:text-pink-400"
       >
         <Heart

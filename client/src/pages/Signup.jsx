@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { createUser } from "../utils/api";
 
 function Signup() {
   const { signup } = useAuth();
@@ -40,12 +41,24 @@ function Signup() {
     try {
       setLoading(true);
 
-      await signup(formData.email, formData.password);
+      //Firebase account creation
 
-      // MongoDB user profile creation will come here later
+      const userCredential = await signup(formData.email, formData.password);
+
+      // Get Firebase UID
+
+      const firebaseUid = userCredential.user.uid;
+
+      // MongoDB user profile creation
+
+      await createUser(firebaseUid, formData.name, formData.email);
 
       navigate("/home");
     } catch (error) {
+      console.log("SIGNUP ERROR:", error);
+      console.log("SIGNUP ERROR CODE:", error.code);
+      console.log("SIGNUP ERROR MESSAGE:", error.message);
+
       if (error.code === "auth/email-already-in-use") {
         setError("An account already exists with this email.");
       } else if (error.code === "auth/invalid-email") {

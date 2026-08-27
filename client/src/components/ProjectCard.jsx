@@ -4,19 +4,11 @@ import ProjectActions from "./ProjectActions";
 export default function ProjectCard({
   project,
   isOwner = false,
-  onLike,
+  onClick,
   onEdit,
   onDelete,
 }) {
   const techStack = project?.techStack || [];
-
-  const ownerName =
-    typeof project?.owner === "object"
-      ? project.owner?.name ||
-        project.owner?.displayName ||
-        project.owner?.email ||
-        "Developer"
-      : "Developer";
 
   return (
     <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-[#11121a]/90 p-5 shadow-2xl shadow-black/20 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/30 hover:shadow-purple-950/20">
@@ -37,7 +29,7 @@ export default function ProjectCard({
 
             <div className="mt-1 flex items-center gap-1.5 text-xs text-gray-500">
               <UserRound size={13} />
-              <span className="truncate">{ownerName}</span>
+              <span>{project.owner?.name || "Developer"}</span>
             </div>
           </div>
         </div>
@@ -75,7 +67,7 @@ export default function ProjectCard({
       <ProjectActions
         project={project}
         isOwner={isOwner}
-        onLike={onLike}
+        onClick={onClick}
         onEdit={onEdit}
         onDelete={onDelete}
       />
