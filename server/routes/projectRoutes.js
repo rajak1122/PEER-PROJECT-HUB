@@ -6,6 +6,7 @@ const {
   updateProject,
   deleteProject,
   likeProject,
+  getProjectByUserId,
 } = require("../controllers/projectController");
 
 const router = require("express").Router();
@@ -23,5 +24,6 @@ router.get("/:id", getProjectById);
 router.put("/:id", updateProject);
 router.delete("/:id", deleteProject);
 router.post("/:id/like", likeProject);
+router.get("/user/:userId", getProjectByUserId);
 
 module.exports = router;

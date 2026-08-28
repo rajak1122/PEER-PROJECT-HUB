@@ -13,13 +13,14 @@ import CommentList from "../components/CommentList";
 
 export default function ProjectDetails() {
   const { id } = useParams();
+  console.log("Project ID:", id);
   const { currentUser } = useAuth();
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [commentLoading, setCommentLoading] = useState(false);
-  const [loggeduser, setLoggeduser] = useState(true)
+  const [loggeduser, setLoggeduser] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -60,7 +61,7 @@ export default function ProjectDetails() {
   const handleAddComment = async (commentText) => {
     try {
       if (!currentUser?.uid) {
-        setLoggeduser(false)
+        setLoggeduser(false);
         console.error("User not available");
         return;
       }
@@ -128,7 +129,11 @@ export default function ProjectDetails() {
 
           {/* Add Comment */}
           <div className="mt-6">
-            <CommentForm loggeduser={loggeduser} onSubmit={handleAddComment} loading={commentLoading} />
+            <CommentForm
+              loggeduser={loggeduser}
+              onSubmit={handleAddComment}
+              loading={commentLoading}
+            />
           </div>
 
           {/* Comments */}

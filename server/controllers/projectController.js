@@ -67,6 +67,23 @@ const getProjectById = async (req, res) => {
   }
 };
 
+const getProjectByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const projectsByUserId = await Project.find({
+      owner: userId,
+    });
+
+    res.status(200).json(projectsByUserId);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch user projects",
+      error: error.message,
+    });
+  }
+};
+
 const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -161,4 +178,5 @@ module.exports = {
   updateProject,
   deleteProject,
   likeProject,
+  getProjectByUserId,
 };

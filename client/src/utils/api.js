@@ -28,6 +28,29 @@ export const getProjectById = async (id) => {
   return response.data;
 };
 
+export const getProjectsByUserId = async (userId) => {
+  const response = await axios.get(`${API_URL}/api/projects/user/${userId}`);
+
+  return response.data;
+};
+
+export const deleteProjectById = async (projectId) => {
+  const response = await axios.delete(
+    `${API_URL}/api/projects/${projectId}`
+  );
+
+  return response.data;
+};
+
+export const updateProjectById = async (id, projectData) => {
+  const response = await axios.put(
+    `${API_URL}/api/projects/${id}`,
+    projectData
+  );
+
+  return response.data;
+};
+
 //Comment calls
 
 export const getCommentsByProjectId = async (projectId) => {
