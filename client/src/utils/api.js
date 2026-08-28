@@ -69,7 +69,7 @@ export const createComment = async (projectId, firebaseUid, content) => {
 //User calls
 
 export const createUser = async (firebaseUid, name, email) => {
-  const response = await axios.post(`${API_URL}/user`, {
+  const response = await axios.post(`${API_URL}/api/user`, {
     firebaseUid,
     name,
     email,

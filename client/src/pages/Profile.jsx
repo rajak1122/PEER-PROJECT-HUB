@@ -113,144 +113,154 @@ export default function Profile() {
 
       <main className="max-w-6xl mx-auto px-6 py-28">
         {/* Profile Header */}
-        <section className="border border-white/10 bg-[#0d0e13] rounded-2xl p-8">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-            {/* Avatar */}
-            <div className="w-24 h-24 rounded-full bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl font-bold shadow-lg shadow-purple-500/20">
-              {fetchedUser?.name.charAt(0)}
-            </div>
-
-            {/* User Details */}
-            <div className="text-center sm:text-left flex-1">
-              <h1 className="text-3xl font-bold">{fetchedUser?.name}</h1>
-
-              <p className="text-gray-400 mt-2">{fetchedUser?.email}</p>
-
-              <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-2">
-                <span className="px-3 py-1 rounded-full text-sm bg-white/5 text-gray-400 border border-white/10">
-                  ID: {fetchedUser?.userId}
-                </span>
-
-                <span className="px-3 py-1 rounded-full text-sm bg-purple-500/10 text-purple-300 border border-purple-500/20">
-                  Student
-                </span>
-
-                <span className="px-3 py-1 rounded-full text-sm bg-blue-500/10 text-blue-300 border border-blue-500/20">
-                  Developer
-                </span>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex items-center justify-center min-h-100">
+            <h1 className="text-xl text-gray-400">Loading your profile...</h1>
           </div>
-        </section>
+        ) : (
+          <>
+            <section className="border border-white/10 bg-[#0d0e13] rounded-2xl p-8">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                {/* Avatar */}
+                <div className="w-24 h-24 rounded-full bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl font-bold shadow-lg shadow-purple-500/20">
+                  {fetchedUser?.name.charAt(0)}
+                </div>
 
-        {/* Projects Section */}
-        <section className="mt-12">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold">My Projects</h2>
+                {/* User Details */}
+                <div className="text-center sm:text-left flex-1">
+                  <h1 className="text-3xl font-bold">{fetchedUser?.name}</h1>
 
-              <p className="text-gray-400 text-sm mt-1">
-                Projects you have created on PPH
-              </p>
-            </div>
+                  <p className="text-gray-400 mt-2">{fetchedUser?.email}</p>
 
-            <button
-              onClick={() => navigate("/projects/new")}
-              className="px-4 py-2 rounded-lg bg-linear-to-r from-purple-600 to-blue-600 hover:opacity-90 transition font-medium"
-            >
-              + Create Project
-            </button>
-          </div>
+                  <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-2">
+                    <span className="px-3 py-1 rounded-full text-sm bg-white/5 text-gray-400 border border-white/10">
+                      ID: {fetchedUser?.userId}
+                    </span>
 
-          {/* Project Grid */}
-          {userProjects?.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {userProjects.map((project) => (
-                <div
-                  key={project._id}
-                  className="group border border-white/10 bg-[#0d0e13] rounded-2xl p-6 hover:border-purple-500/30 transition"
-                >
-                  {/* Title */}
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-xl font-semibold group-hover:text-purple-400 transition">
-                      {project.title}
-                    </h3>
+                    <span className="px-3 py-1 rounded-full text-sm bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                      Student
+                    </span>
 
-                    <span className="text-xs px-2 py-1 rounded-md bg-white/5 text-gray-400">
-                      Project
+                    <span className="px-3 py-1 rounded-full text-sm bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                      Developer
                     </span>
                   </div>
+                </div>
+              </div>
+            </section>
 
-                  {/* Posted Time */}
-                  <div className="mt-2 text-xs text-gray-500">
-                    Posted {formatTimeAgo(project.createdAt)}
-                  </div>
+            {/* Projects Section */}
+            <section className="mt-12">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold">My Projects</h2>
 
-                  {/* Description */}
-                  <p className="text-gray-400 text-sm leading-6 mt-3">
-                    {project.description}
+                  <p className="text-gray-400 text-sm mt-1">
+                    Projects you have created on PPH
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => navigate("/projects/new")}
+                  className="px-4 py-2 rounded-lg bg-linear-to-r from-purple-600 to-blue-600 hover:opacity-90 transition font-medium"
+                >
+                  + Create Project
+                </button>
+              </div>
+
+              {/* Project Grid */}
+              {userProjects?.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {userProjects.map((project) => (
+                    <div
+                      key={project._id}
+                      className="group border border-white/10 bg-[#0d0e13] rounded-2xl p-6 hover:border-purple-500/30 transition"
+                    >
+                      {/* Title */}
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="text-xl font-semibold group-hover:text-purple-400 transition">
+                          {project.title}
+                        </h3>
+
+                        <span className="text-xs px-2 py-1 rounded-md bg-white/5 text-gray-400">
+                          Project
+                        </span>
+                      </div>
+
+                      {/* Posted Time */}
+                      <div className="mt-2 text-xs text-gray-500">
+                        Posted {formatTimeAgo(project.createdAt)}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-gray-400 text-sm leading-6 mt-3">
+                        {project.description}
+                      </p>
+
+                      {/* Tech Stack */}
+                      <div className="flex flex-wrap gap-2 mt-5">
+                        {project.techStack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-3 py-1 text-xs rounded-lg border border-white/10 bg-white/5 text-gray-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex gap-3 mt-6">
+                        <button
+                          onClick={() => navigate(`/projects/${project._id}`)}
+                          className="flex-1 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                        >
+                          View Project
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            navigate(`/projects/${project._id}/edit`)
+                          }
+                          className="flex-1 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition"
+                        >
+                          Edit Project
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setProjectToDelete(project);
+                            setShowDeleteModal(true);
+                          }}
+                          className="px-4 py-2 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition"
+                          title="Delete Project"
+                        >
+                          <FaTrash size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Empty State */
+                <div className="border border-dashed border-white/10 rounded-2xl py-16 text-center">
+                  <h3 className="text-lg font-semibold">No projects yet</h3>
+
+                  <p className="text-gray-400 text-sm mt-2">
+                    Start by creating your first project.
                   </p>
 
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 text-xs rounded-lg border border-white/10 bg-white/5 text-gray-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex gap-3 mt-6">
-                    <button
-                      onClick={() => navigate(`/projects/${project._id}`)}
-                      className="flex-1 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition"
-                    >
-                      View Project
-                    </button>
-
-                    <button
-                      onClick={() => navigate(`/projects/${project._id}/edit`)}
-                      className="flex-1 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition"
-                    >
-                      Edit Project
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setProjectToDelete(project);
-                        setShowDeleteModal(true);
-                      }}
-                      className="px-4 py-2 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition"
-                      title="Delete Project"
-                    >
-                      <FaTrash size={14} />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => navigate("/projects/new")}
+                    className="mt-5 px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition"
+                  >
+                    Create Project
+                  </button>
                 </div>
-              ))}
-            </div>
-          ) : (
-            /* Empty State */
-            <div className="border border-dashed border-white/10 rounded-2xl py-16 text-center">
-              <h3 className="text-lg font-semibold">No projects yet</h3>
-
-              <p className="text-gray-400 text-sm mt-2">
-                Start by creating your first project.
-              </p>
-
-              <button
-                onClick={() => navigate("/projects/new")}
-                className="mt-5 px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition"
-              >
-                Create Project
-              </button>
-            </div>
-          )}
-        </section>
+              )}
+            </section>
+          </>
+        )}
       </main>
 
       {showDeleteModal && (
