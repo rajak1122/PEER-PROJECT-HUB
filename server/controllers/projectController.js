@@ -5,11 +5,7 @@ const createProject = async (req, res) => {
   try {
     const { firebaseUid, ...projectData } = req.body;
 
-    console.log("🔥 Firebase UID:", firebaseUid);
-
     const user = await User.findOne({ firebaseUid });
-
-    console.log("🔥 Mongo User:", user);
 
     if (!user) {
       return res.status(404).json({
@@ -49,12 +45,9 @@ const getProject = async (req, res) => {
 };
 
 const getProjectById = async (req, res) => {
-  console.log("🔥 GET PROJECT BY ID HIT:", req.params.id);
 
   try {
     const project = await Project.findById(req.params.id);
-
-    console.log("🔥 PROJECT FOUND:", project);
 
     if (!project) {
       return res.status(404).json({
@@ -64,9 +57,6 @@ const getProjectById = async (req, res) => {
 
     const owner = await User.findById(project.owner).select("name email");
 
-    console.log("🔥 PROJECT OWNER ID:", project.owner);
-    console.log("🔥 FOUND OWNER:", owner);
-
     const projectData = {
       ...project.toObject(),
       owner: owner,
@@ -74,7 +64,6 @@ const getProjectById = async (req, res) => {
 
     res.status(200).json(projectData);
   } catch (error) {
-    console.log("🔥 GET PROJECT ERROR:", error);
 
     res.status(500).json({
       message: "Something went wrong",
@@ -105,14 +94,9 @@ const updateProject = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    console.log("UPDATE ID:", id);
-    console.log("UPDATE DATA:", updateData);
-
     const updateProjectByID = await Project.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-
-    console.log("UPDATED PROJECT:", updateProjectByID);
 
     if (!updateProjectByID) {
       return res.status(404).json({

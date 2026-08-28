@@ -51,14 +51,6 @@ export default function ProjectDetails() {
     fetchComments();
   }, [id]);
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (!project) {
-  //   return <div>Project not found</div>;
-  // }
-
   console.log(project);
 
   const formatTimeAgo = (date) => {
@@ -99,6 +91,7 @@ export default function ProjectDetails() {
 
   const handleAddComment = async (commentText) => {
     try {
+      setCommentLoading(true)
       if (!currentUser?.uid) {
         setLoggeduser(false);
         console.error("User not available");
@@ -109,6 +102,8 @@ export default function ProjectDetails() {
       setComments((prevComments) => [...prevComments, newComment]);
     } catch (error) {
       console.error("Failed to add comment:", error);
+    } finally{
+      setCommentLoading(false)
     }
   };
 

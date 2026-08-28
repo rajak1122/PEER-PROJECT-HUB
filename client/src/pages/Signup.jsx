@@ -56,9 +56,6 @@ function Signup() {
 
       navigate("/home");
     } catch (error) {
-      console.log("SIGNUP ERROR:", error);
-      console.log("SIGNUP ERROR CODE:", error.code);
-      console.log("SIGNUP ERROR MESSAGE:", error.message);
 
       if (error.code === "auth/email-already-in-use") {
         setError("An account already exists with this email.");

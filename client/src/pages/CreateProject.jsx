@@ -17,9 +17,12 @@ export default function CreateProject() {
     message: "",
     projectId: null,
   });
+  const [loading, setLoading] = useState(false)
 
   const handleCreateProject = async (formData) => {
     try {
+      setLoading(true)
+
       const projectData = {
         ...formData,
         firebaseUid: currentUser.uid,
@@ -54,6 +57,8 @@ export default function CreateProject() {
 
       return false;
       
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -91,7 +96,7 @@ export default function CreateProject() {
           <div className="mx-auto max-w-3xl">
             <ProjectForm
               onSubmit={handleCreateProject}
-              // loading={loading}
+              loading={loading}
               submitLabel="Create Project"
             />
           </div>

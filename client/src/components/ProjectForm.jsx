@@ -13,7 +13,7 @@ const emptyForm = {
 export default function ProjectForm({
   initialData = {},
   onSubmit,
-  loading = false,
+  loading,
   submitLabel = "Create Project",
 }) {
   const [formData, setFormData] = useState({

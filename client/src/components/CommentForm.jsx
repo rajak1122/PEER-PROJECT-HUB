@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CommentForm({ onSubmit, loading = false, loggeduser }) {
+export default function CommentForm({ onSubmit, loading, loggeduser }) {
   const [comment, setComment] = useState("");
 
   const handleSubmit = async (e) => {

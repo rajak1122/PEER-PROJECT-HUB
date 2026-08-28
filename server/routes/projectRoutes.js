@@ -11,14 +11,7 @@ const {
 
 const router = require("express").Router();
 
-router.post(
-  "/",
-  (req, res, next) => {
-    console.log("🔥 PROJECT POST ROUTE HIT");
-    next();
-  },
-  createProject,
-);
+router.post("/", createProject);
 router.get("/", getProject);
 router.get("/:id", getProjectById);
 router.put("/:id", updateProject);
