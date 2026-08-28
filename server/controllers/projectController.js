@@ -1,25 +1,32 @@
 const Project = require("../models/Project");
+const User = require("../models/User");
 
 const createProject = async (req, res) => {
   try {
-    const { title, description, techStack, githubUrl, liveUrl, owner } =
-      req.body;
+    const { firebaseUid, ...projectData } = req.body;
+
+    console.log("🔥 Firebase UID:", firebaseUid);
+
+    const user = await User.findOne({ firebaseUid });
+
+    console.log("🔥 Mongo User:", user);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     const project = await Project.create({
-      title,
-      description,
-      techStack,
-      githubUrl,
-      liveUrl,
-      owner,
+      ...projectData,
+      owner: user._id,
     });
 
-    res.status(201).json({
-      message: "Project created sucessfully",
-      project,
-    });
+    res.status(201).json(project);
   } catch (error) {
-    res.status(200).json({
+    console.error("🔥 Failed to create project:", error);
+
+    res.status(500).json({
       message: "Failed to create project",
       error: error.message,
     });
@@ -28,7 +35,9 @@ const createProject = async (req, res) => {
 
 const getProject = async (req, res) => {
   try {
-    const prevProjects = await Project.find().sort({ createdAt: -1 });
+    const prevProjects = await Project.find()
+      .populate("owner", "name email")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(prevProjects);
   } catch (error) {
@@ -72,7 +81,7 @@ const updateProject = async (req, res) => {
 
     console.log("UPDATED PROJECT:", updateProjectByID);
 
-    if (!updateProject) {
+    if (!updateProjectByID) {
       return res.status(404).json({
         message: "Project Not Fount",
       });
@@ -111,10 +120,45 @@ const deleteProject = async (req, res) => {
   }
 };
 
+const likeProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(404).json({
+        message: "ID is required",
+      });
+    }
+
+    const likedProject = await Project.findByIdAndUpdate(
+      id,
+      {
+        $inc: {
+          likes: 1,
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    res.status(200).json({
+      message: "Project liked sucessfully",
+      likes: likedProject.likes,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to like Project",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProject,
   getProject,
   getProjectById,
   updateProject,
   deleteProject,
+  likeProject,
 };
