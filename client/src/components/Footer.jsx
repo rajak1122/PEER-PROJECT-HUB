@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Footer() {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const loggedUser = !!currentUser;
+
   return (
     <footer className="border-t border-white/10">
       <div
@@ -11,17 +17,28 @@ export default function Footer() {
         <p className="text-sm text-gray-600">© 2026 Peer Project Hub</p>
 
         <div className="flex gap-6 text-sm text-gray-600">
-          <Link to="/home" className="hover:text-gray-300 transition">
+          <button
+            onClick={() => navigate("/home")}
+            className="hover:text-gray-300 transition"
+          >
             Explore
-          </Link>
+          </button>
 
-          <Link to="/login" className="hover:text-gray-300 transition">
+          <button
+            disabled={loggedUser}
+            onClick={() => navigate("/login")}
+            className="hover:text-gray-300 transition disabled:cursor-not-allowed disabled:opacity-40"
+          >
             Login
-          </Link>
+          </button>
 
-          <Link to="/signup" className="hover:text-gray-300 transition">
+          <button
+            disabled={loggedUser}
+            onClick={() => navigate("/signup")}
+            className="hover:text-gray-300 transition disabled:cursor-not-allowed disabled:opacity-40"
+          >
             Sign Up
-          </Link>
+          </button>
         </div>
       </div>
     </footer>
