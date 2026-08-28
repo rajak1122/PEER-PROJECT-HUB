@@ -35,9 +35,7 @@ export const getProjectsByUserId = async (userId) => {
 };
 
 export const deleteProjectById = async (projectId) => {
-  const response = await axios.delete(
-    `${API_URL}/api/projects/${projectId}`
-  );
+  const response = await axios.delete(`${API_URL}/api/projects/${projectId}`);
 
   return response.data;
 };
@@ -45,7 +43,7 @@ export const deleteProjectById = async (projectId) => {
 export const updateProjectById = async (id, projectData) => {
   const response = await axios.put(
     `${API_URL}/api/projects/${id}`,
-    projectData
+    projectData,
   );
 
   return response.data;

@@ -7,6 +7,7 @@ export default function ProjectCard({
   onClick,
   onEdit,
   onDelete,
+  formatTimeAgo,
 }) {
   const techStack = project?.techStack || [];
 
@@ -27,9 +28,11 @@ export default function ProjectCard({
               {project?.title}
             </h2>
 
-            <div className="mt-1 flex items-center gap-1.5 text-xs text-gray-500">
-              <UserRound size={13} />
-              <span>{project.owner?.name || "Developer"}</span>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <UserRound size={15} />
+              <span>{project.owner?.name}</span>
+              <span>•</span>
+              <span>{formatTimeAgo(project.createdAt)}</span>
             </div>
           </div>
         </div>
@@ -40,7 +43,7 @@ export default function ProjectCard({
       </div>
 
       {/* Description */}
-      <p className="relative mt-5 line-clamp-3 text-sm leading-6 text-gray-400">
+      <p className="relative mt-5 text-sm leading-6 text-gray-400 line-clamp-2">
         {project?.description}
       </p>
 

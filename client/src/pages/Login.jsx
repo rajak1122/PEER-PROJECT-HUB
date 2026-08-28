@@ -12,6 +12,7 @@ function Login() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -238,7 +239,7 @@ function Login() {
               </div>
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 onChange={handleChange}
                 value={formData.password}
@@ -254,6 +255,13 @@ function Login() {
                 focus:ring-1 focus:ring-violet-500/30
                 transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-16 md:right-28 translate-y-6 text-sm text-gray-500 hover:text-white"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
 
             {/* Remember Me */}

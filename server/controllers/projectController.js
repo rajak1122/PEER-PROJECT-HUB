@@ -49,17 +49,33 @@ const getProject = async (req, res) => {
 };
 
 const getProjectById = async (req, res) => {
-  try {
-    const projectsByID = await Project.findById(req.params.id);
+  console.log("🔥 GET PROJECT BY ID HIT:", req.params.id);
 
-    if (!projectsByID) {
+  try {
+    const project = await Project.findById(req.params.id);
+
+    console.log("🔥 PROJECT FOUND:", project);
+
+    if (!project) {
       return res.status(404).json({
         message: "Project Not Found",
       });
     }
 
-    res.status(200).json(projectsByID);
+    const owner = await User.findById(project.owner).select("name email");
+
+    console.log("🔥 PROJECT OWNER ID:", project.owner);
+    console.log("🔥 FOUND OWNER:", owner);
+
+    const projectData = {
+      ...project.toObject(),
+      owner: owner,
+    };
+
+    res.status(200).json(projectData);
   } catch (error) {
+    console.log("🔥 GET PROJECT ERROR:", error);
+
     res.status(500).json({
       message: "Something went wrong",
       error: error.message,

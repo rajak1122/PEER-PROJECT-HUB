@@ -16,6 +16,7 @@ function Signup() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -261,7 +262,7 @@ function Signup() {
               <label className="text-sm text-gray-400">Password</label>
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -274,6 +275,13 @@ function Signup() {
                   focus:ring-1 focus:ring-violet-500/30
                   transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-16 md:right-28 translate-y-6 text-sm text-gray-500 hover:text-white"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
 
             {/* Confirm Password */}
@@ -281,7 +289,7 @@ function Signup() {
               <label className="text-sm text-gray-400">Confirm Password</label>
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -294,6 +302,13 @@ function Signup() {
                   focus:ring-1 focus:ring-violet-500/30
                   transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-16 md:right-28 translate-y-6 text-sm text-gray-500 hover:text-white"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
 
             {/* Error */}

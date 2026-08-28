@@ -4,7 +4,7 @@ import {
   FolderGit2,
   Search,
   Sparkles,
-  TrendingUp,
+  Lightbulb,
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -90,6 +90,45 @@ export default function Home() {
     }
   };
 
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const created = new Date(date);
+
+    const diffInSeconds = Math.floor((now - created) / 1000);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds}s ago`;
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} min ago`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+
+    if (diffInHours < 24) {
+      return `${diffInHours} hr ago`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays < 30) {
+      return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+    }
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+
+    if (diffInMonths < 12) {
+      return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
+    }
+
+    const diffInYears = Math.floor(diffInDays / 365);
+
+    return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
+  };
+
   return (
     <div className="min-h-screen bg-[#08090d] text-white">
       <Navbar />
@@ -125,31 +164,47 @@ export default function Home() {
               inspired and find ideas for your next build.
             </p>
 
-            {/* Stats */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-3">
-                <FolderGit2 size={18} className="text-purple-400" />
+            {/* Platform Highlights */}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                <FolderGit2
+                  size={20}
+                  className="text-purple-400 mt-0.5 shrink-0"
+                />
                 <div>
                   <p className="text-sm font-semibold text-white">
-                    {projects.length}
+                    Build & Showcase
                   </p>
-                  <p className="text-[11px] text-gray-500">Projects</p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+                    Share your projects and build your public portfolio.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-3">
-                <Users size={18} className="text-blue-400" />
+              <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                <Users size={20} className="text-blue-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-sm font-semibold text-white">500+</p>
-                  <p className="text-[11px] text-gray-500">Developers</p>
+                  <p className="text-sm font-semibold text-white">
+                    Learn From Peers
+                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+                    Explore how other developers build and solve problems.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-3">
-                <TrendingUp size={18} className="text-emerald-400" />
+              <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                <Lightbulb
+                  size={20}
+                  className="text-emerald-400 mt-0.5 shrink-0"
+                />
                 <div>
-                  <p className="text-sm font-semibold text-white">3K+</p>
-                  <p className="text-[11px] text-gray-500">Interactions</p>
+                  <p className="text-sm font-semibold text-white">
+                    Get Inspired
+                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+                    Discover ideas, technologies, and projects worth exploring.
+                  </p>
                 </div>
               </div>
             </div>
@@ -221,6 +276,7 @@ export default function Home() {
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {filteredProjects.map((project) => (
                 <ProjectCard
+                  formatTimeAgo={formatTimeAgo}
                   key={project._id}
                   project={project}
                   onClick={() => handleLike(project._id)}

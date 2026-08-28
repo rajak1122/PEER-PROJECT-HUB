@@ -74,6 +74,39 @@ export default function Profile() {
     }
   };
 
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const created = new Date(date);
+
+    const diffInSeconds = Math.floor((now - created) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "just now";
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minute${diffInMinutes !== 1 ? "s" : ""} ago`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+
+    if (diffInHours < 24) {
+      return `${diffInHours} hour${diffInHours !== 1 ? "s" : ""} ago`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays < 30) {
+      return `${diffInDays} day${diffInDays !== 1 ? "s" : ""} ago`;
+    }
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+
+    return `${diffInMonths} month${diffInMonths !== 1 ? "s" : ""} ago`;
+  };
+
   return (
     <div className="min-h-screen bg-[#08090d] text-white">
       <Navbar />
@@ -146,6 +179,11 @@ export default function Profile() {
                     <span className="text-xs px-2 py-1 rounded-md bg-white/5 text-gray-400">
                       Project
                     </span>
+                  </div>
+
+                  {/* Posted Time */}
+                  <div className="mt-2 text-xs text-gray-500">
+                    Posted {formatTimeAgo(project.createdAt)}
                   </div>
 
                   {/* Description */}
